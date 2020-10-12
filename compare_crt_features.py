@@ -63,21 +63,21 @@ def show_crt_summary(summary, crt):
 
 
 def patterns_output(samples, output_base):
-    out_json = {}
+    info_lines = []
     for crt in samples.keys():
         seq = 0
-        out_json[crt] = []
         sorted_pat = sorted(samples[crt], key=lambda x: x['count'], reverse=True)
         for pat in sorted_pat:
             file_name = '%s__%d.csv' % (crt, seq) 
             out_path = os.path.join(output_base, file_name)
             src_path = pat['path']
             copyfile(src_path, out_path)
-            out_json[crt].append(out_path)
+            line = '%s,%s' % (crt, out_path)
+            info_lines.append(line)
             seq += 1
-    with open(os.path.join(output_base, 'info.json'), 'w') as ofile:
-        ofile.write(json.dumps(out_json, indent=4))
-
+    with open(os.path.join(output_base, 'info_csv'), 'w') as info_csv:
+        info_csv.write('\n'.join(info_lines))
+    
 
 def main():
     arg = get_args()
