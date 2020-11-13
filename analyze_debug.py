@@ -37,6 +37,8 @@ def parse_and_save(debug_path, output_folder):
             escaped_passname = pass_name.replace(' ', '-').replace('&', '-and-').replace('/', '-or-').replace("'","").replace('"','')
             print(escaped_passname)
             code_path = os.path.join(output_folder, '%s_%s.ir' % (func_name, escaped_passname))
+            while os.path.exists(code_path):
+                code_path += '.next'
             with open(code_path, 'w') as ofile:
                 ofile.write('\n'.join(mcode_lines))
             mcode_lines.clear()
@@ -59,6 +61,7 @@ def diff(output_folder, diff_folder):
                 base_pass = f_info[i]['pass']
                 # print('Start diff %s and %s' % (prev_pass, base_pass))
                 cmd = 'diff %s %s > tmp_diff.txt' % (prev_ir, base_ir)
+                print(cmd)
                 ret_code = subprocess.call(cmd, shell=True)
                 if ret_code == 1:
                     print('    %s' % base_pass)
@@ -68,8 +71,8 @@ def diff(output_folder, diff_folder):
                     subprocess.call(cmd, shell=True)
                     f_info[i]['change'] = True
                     f_info[i]['diff'] = diff_path
-                    prev_ir = base_ir
-                    prev_pass = base_pass
+                prev_ir = base_ir
+                prev_pass = base_pass
     with open(os.path.join(output_folder, 'info_summary.json'), 'w') as ofile:
         ofile.write(json.dumps(summary, indent=4))
 
