@@ -61,7 +61,7 @@ def diff(output_folder, diff_folder):
                 base_pass = f_info[i]['pass']
                 # print('Start diff %s and %s' % (prev_pass, base_pass))
                 cmd = 'diff %s %s > tmp_diff.txt' % (prev_ir, base_ir)
-                print(cmd)
+                # print(cmd)
                 ret_code = subprocess.call(cmd, shell=True)
                 if ret_code == 1:
                     print('    %s' % base_pass)
