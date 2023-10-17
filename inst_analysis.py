@@ -3,7 +3,7 @@ import sys
 import os
 import utils
 import pandas as pd
-from sklearn.model_selection import train_test_split, cross_val_score, cross_validate
+from sklearn.model_selection import train_test_split, cross_validate
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import argparse
@@ -42,8 +42,7 @@ def load_data(data_folder, trial_mode):
         else:
             data_set = pd.concat(
                 [data_set, data], ignore_index=True)
-        g = data_set.groupby('target')
-        data_set = pd.DataFrame(g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True)))
+        data_set = pd.DataFrame(data_set.groupby('target').apply(lambda x: x.sample(data_set.groupby('target').size().min()).reset_index(drop=True)))
         print('Import %d records in dataframe' % len(data_set))
         if trial_mode and len(data_set) > 300000:
             break
