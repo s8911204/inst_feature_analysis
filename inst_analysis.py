@@ -16,6 +16,16 @@ import matplotlib.pyplot as plt
 from joblib import dump, load
 
 
+# Function: load_data
+# Parameters: 
+#   data_folder (str): the folder which contains dataset.
+#   trial_mode (bool): if True, stop loading data after more than 30000 records are loaded.
+# Returns: 
+#   data_set (DataFrame): a pandas DataFrame that contains the data loaded from the CSV files in the specified folder.
+# Errors/Exceptions: 
+#   May raise exceptions related to file operations if the input data is not as expected.
+# Examples: None
+# Notes: None
 def load_data(data_folder, trial_mode):
     data_set = pd.DataFrame() 
     for filename in os.listdir(data_folder):
@@ -30,11 +40,10 @@ def load_data(data_folder, trial_mode):
         else:
             data_set = pd.concat(
                 [data_set, data], ignore_index=True)
-        # g = data_set.groupby('target')
-        # data_set = pd.DataFrame(g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True)))
+        g = data_set.groupby('target')
+        data_set = pd.DataFrame(g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True)))
         print('Import %d records in dataframe' % len(data_set))
-        if trial_mode and len(data_set) > 30000:
-        # if trial_mode and len(data_set) > 300000:
+        if trial_mode and len(data_set) > 300000:
             break
     return data_set
 
