@@ -13,7 +13,7 @@ import json
 from sklearn import tree
 import pydotplus
 import matplotlib.pyplot as plt
-from joblib import dump, load
+from joblib import dump
 
 
 def load_data(data_folder, trial_mode):
