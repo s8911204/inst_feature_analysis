@@ -1,6 +1,6 @@
 #!/user/bin/python3
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def toDf(item_path, dropCols=None):
@@ -8,10 +8,10 @@ def toDf(item_path, dropCols=None):
     counter = 0
     for chunk in chunks(item_path):
         if dropCols is not None:
-            chunk = chunk.drop(labels=dropCols, axis='columns')
+            chunk = chunk.drop(labels=dropCols, axis="columns")
         pf_list.append(chunk)
         counter += len(chunk.index)
-        # print('read %d of %s' % (counter, item_path))
+        print("read %d of %s" % (counter, item_path))
     return pd.concat(pf_list)
 
 
